@@ -121,12 +121,13 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="{{url_for('static', filename='images/profile/user-1.jpg')}}" alt=""
                                         width="35" height="35" class="rounded-circle">
+                                    <p class="ms-2 mt-2">{{session['username']}}</p>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Se déconnecter</a>
+                                        <a href="/logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Se
+                                            déconnecter</a>
                                     </div>
                                 </div>
                             </li>
@@ -354,13 +355,15 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="prenom" class="form-label">Prenom</label>
-                                <input type="text" class="form-control" id="prenom" name="prenom" value="{{personnel.2}}">
+                                <input type="text" class="form-control" id="prenom" name="prenom"
+                                    value="{{personnel.2}}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" value="{{personnel.3}}">
+                                <input type="text" class="form-control" id="username" name="username"
+                                    value="{{personnel.3}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="password" class="form-label">Mot de passe</label>
@@ -380,20 +383,26 @@
                         <div class="mb-3">
                             <label for="departement" class="form-label">Département</label>
                             <select class="form-select" name="departement" id="departement">
-                                <option value="Direction" {%if personnel.6 == 'Direction'%} selected {%endif%}>Direction</option>
-                                <option value="Trading" {%if personnel.6 == 'Trading'%} selected {%endif%}>Trading</option>
-                                <option value="Academy" {%if personnel.6 == 'Academy'%} selected {%endif%}>Academy</option>
-                                <option value="Digital" {%if personnel.6 == 'Digital'%} selected {%endif%}>Digital</option>
+                                <option value="Direction" {%if personnel.6=='Direction' %} selected {%endif%}>Direction
+                                </option>
+                                <option value="Trading" {%if personnel.6=='Trading' %} selected {%endif%}>Trading
+                                </option>
+                                <option value="Academy" {%if personnel.6=='Academy' %} selected {%endif%}>Academy
+                                </option>
+                                <option value="Digital" {%if personnel.6=='Digital' %} selected {%endif%}>Digital
+                                </option>
                             </select>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="date_arrivee" class="form-label">Date arrivée</label>
-                                <input type="date" class="form-control" id="date_arrivee" name="date_arrivee" value="{{personnel.7}}">
+                                <input type="date" class="form-control" id="date_arrivee" name="date_arrivee"
+                                    value="{{personnel.7}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="date_depart" class="form-label">Date départ</label>
-                                <input type="date" class="form-control" id="date_depart" name="date_depart" value="{{personnel.8}}">
+                                <input type="date" class="form-control" id="date_depart" name="date_depart"
+                                    value="{{personnel.8}}">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -403,23 +412,28 @@
                         <div class="mb-3">
                             <label for="convention" class="form-label">Convention</label>
                             <select class="form-select" name="convention" id="convention">
-                                <option value="Stage" {%if personnel.10 == 'Stage'%} selected {%endif%}>Stage</option>
-                                <option value="CDD" {%if personnel.10 == 'CDD'%} selected {%endif%}>CDD</option>
-                                <option value="CDI" {%if personnel.10 == 'CDI'%} selected {%endif%}>CDI</option>
+                                <option value="Stage" {%if personnel.10=='Stage' %} selected {%endif%}>Stage</option>
+                                <option value="CDD" {%if personnel.10=='CDD' %} selected {%endif%}>CDD</option>
+                                <option value="CDI" {%if personnel.10=='CDI' %} selected {%endif%}>CDI</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
                             <select class="form-select" name="role" id="role">
-                                <option value="Administrator" {%if personnel.12 == 'Administrator'%} selected {%endif%}>Administrator</option>
-                                <option value="Trading" {%if personnel.12 == 'Trading'%} selected {%endif%}>Trading</option>
-                                <option value="Academy" {%if personnel.12 == 'Academy'%} selected {%endif%}>Academy</option>
-                                <option value="Digital" {%if personnel.12 == 'Digital'%} selected {%endif%}>Digital</option>
+                                <option value="Administrator" {%if personnel.12=='Administrator' %} selected {%endif%}>
+                                    Administrator</option>
+                                <option value="Trading" {%if personnel.12=='Trading' %} selected {%endif%}>Trading
+                                </option>
+                                <option value="Academy" {%if personnel.12=='Academy' %} selected {%endif%}>Academy
+                                </option>
+                                <option value="Digital" {%if personnel.12=='Digital' %} selected {%endif%}>Digital
+                                </option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="observations" class="form-label">Observations</label>
-                            <textarea class="form-control" name="observations" id="observations">{{personnel.13}}</textarea>
+                            <textarea class="form-control" name="observations"
+                                id="observations">{{personnel.13}}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </form>

@@ -121,12 +121,13 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="{{url_for('static', filename='images/profile/user-1.jpg')}}" alt=""
                                         width="35" height="35" class="rounded-circle">
+                                    <p class="ms-2 mt-2">{{session['username']}}</p>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Se déconnecter</a>
+                                        <a href="/logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Se
+                                            déconnecter</a>
                                     </div>
                                 </div>
                             </li>
@@ -279,7 +280,8 @@
     </div>
 
     <!-- Add trading Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -312,7 +314,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="prenom_client" class="form-label">Prenom Client</label>
-                                <input type="text" class="form-control" id="prenom_client" name="prenom_client" required>
+                                <input type="text" class="form-control" id="prenom_client" name="prenom_client"
+                                    required>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -332,17 +335,20 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite" oninput="calculateMontants()" required>
+                                <input type="number" class="form-control" id="quantite" name="quantite"
+                                    oninput="calculateMontants()" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit" oninput="calculateMontants()" required>
+                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
+                                    oninput="calculateMontants()" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht" readonly>
+                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
+                                    readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="tva" class="form-label">Montant TVA</label>
@@ -350,13 +356,15 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc" name="montant_ttc" readonly>
+                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
+                                    name="montant_ttc" readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="modalite_paiement" class="form-label">Modalité de paiement</label>
-                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement" required>
+                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label for="type_paiement" class="form-label">Type de paiement</label>
@@ -398,39 +406,46 @@
                         <div class="mb-3">
                             <label for="date_const" class="form-label">Date de construction</label>
                             <input type="hidden" name="id" value="{{trading.0}}">
-                            <input type="date" class="form-control" id="date_const" name="date_const" value="{{trading.1}}">
+                            <input type="date" class="form-control" id="date_const" name="date_const"
+                                value="{{trading.1}}">
                         </div>
                         <div class="mb-3">
                             <label for="personnel_id" class="form-label">Membre du personnel</label>
                             <select class="form-select" id="personnel_id" name="personnel_id" required>
                                 <option value="" selected disabled>Choisir un membre</option>
                                 {% for personnel in personnels %}
-                                <option value="{{ personnel.0 }}" {%if personnel.0 == trading.2%} selected {%endif%}>{{ personnel.2 }} {{ personnel.1 }}</option>
+                                <option value="{{ personnel.0 }}" {%if personnel.0==trading.2%} selected {%endif%}>{{
+                                    personnel.2 }} {{ personnel.1 }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="type_libelle" class="form-label">Type de libellé</label>
-                            <input type="text" class="form-control" id="type_libelle" name="type_libelle" value="{{trading.3}}">
+                            <input type="text" class="form-control" id="type_libelle" name="type_libelle"
+                                value="{{trading.3}}">
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="nom_client" class="form-label">Nom Client</label>
-                                <input type="text" class="form-control" id="nom_client" name="nom_client" value="{{trading.4}}">
+                                <input type="text" class="form-control" id="nom_client" name="nom_client"
+                                    value="{{trading.4}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="prenom_client" class="form-label">Prenom Client</label>
-                                <input type="text" class="form-control" id="prenom_client" name="prenom_client" value="{{trading.5}}">
+                                <input type="text" class="form-control" id="prenom_client" name="prenom_client"
+                                    value="{{trading.5}}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="phone_client" class="form-label">Phone Client</label>
-                                <input type="text" class="form-control" id="phone_client" name="phone_client" value="{{trading.6}}">
+                                <input type="text" class="form-control" id="phone_client" name="phone_client"
+                                    value="{{trading.6}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="email_client" class="form-label">Email Client</label>
-                                <input type="text" class="form-control" id="email_client" name="email_client" value="{{trading.7}}">
+                                <input type="text" class="form-control" id="email_client" name="email_client"
+                                    value="{{trading.7}}">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -440,45 +455,56 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite" oninput="calculateMontants()" value="{{trading.9}}">
+                                <input type="number" class="form-control" id="quantite" name="quantite"
+                                    oninput="calculateMontants()" value="{{trading.9}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit" oninput="calculateMontants()" value="{{trading.10}}">
+                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
+                                    oninput="calculateMontants()" value="{{trading.10}}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht" readonly value="{{trading.11}}">
+                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
+                                    readonly value="{{trading.11}}">
                             </div>
                             <div class="col-md-4">
                                 <label for="tva" class="form-label">Montant TVA</label>
-                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly value="{{trading.12}}">
+                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly
+                                    value="{{trading.12}}">
                             </div>
                             <div class="col-md-4">
                                 <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc" name="montant_ttc" readonly value="{{trading.13}}">
+                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
+                                    name="montant_ttc" readonly value="{{trading.13}}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="modalite_paiement" class="form-label">Modalité de paiement</label>
-                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement" value="{{trading.14}}">
+                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement"
+                                    value="{{trading.14}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="type_paiement" class="form-label">Type de paiement</label>
                                 <select class="form-select" name="type_paiement" id="type_paiement">
-                                    <option value="Virement bancaire" {%if trading.15 == 'Virement bancaire'%} selected {%endif%}>Virement bancaire</option>
-                                    <option value="Cheque" {%if trading.15 == 'Cheque'%} selected {%endif%}>Cheque</option>
-                                    <option value="Especes" {%if trading.15 == 'Especes'%} selected {%endif%}>Especes</option>
-                                    <option value="Paiement mobile" {%if trading.15 == 'Paiement mobile'%} selected {%endif%}>Paiement mobile</option>
+                                    <option value="Virement bancaire" {%if trading.15=='Virement bancaire' %} selected
+                                        {%endif%}>Virement bancaire</option>
+                                    <option value="Cheque" {%if trading.15=='Cheque' %} selected {%endif%}>Cheque
+                                    </option>
+                                    <option value="Especes" {%if trading.15=='Especes' %} selected {%endif%}>Especes
+                                    </option>
+                                    <option value="Paiement mobile" {%if trading.15=='Paiement mobile' %} selected
+                                        {%endif%}>Paiement mobile</option>
                                 </select>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="observations" class="form-label">Observations</label>
-                            <textarea class="form-control" name="observations" id="observations">{{trading.16}}</textarea>
+                            <textarea class="form-control" name="observations"
+                                id="observations">{{trading.16}}</textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enregistrer</button>

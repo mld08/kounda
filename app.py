@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session
 import mysql.connector
 import hashlib
@@ -120,15 +121,53 @@ def init_db():
             observations TEXT
         )
     ''')
-    """cursor.execute("SELECT * FROM users WHERE role='Administrator' and username='admin' ")
+    cursor.execute("SELECT * FROM personnels WHERE role='Administrator' and username='admin' ")
     existing_admin = cursor.fetchone()
     if not existing_admin:
-        password = hash_password("admin")
-        cursor.execute("INSERT INTO users (username, email, password, role) VALUES (%s, %s, %s, %s)", ('admin', 'mldiop08@gmail.com', password, 'Administrator'))"""
+        password = hash_password("adminSLC123")
+        cursor.execute("INSERT INTO personnels (nom, prenom, username, email, phone, departement, date_arrivee, date_depart, ecole, convention, password, role, observations) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", ('Administrateur', 'Administrateur', 'admin', 'sano-logistic@sano-logistic.com', '777777777','Direction', '2025-01-01','2025-01-01', 'SLC', 'CDI', password, 'Administrator', 'Test'))
     conn.commit()
     return conn, cursor
 
+# Login Required decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'id' not in session:
+            flash('Veuillez vous connecter pour accéder à cette page.', 'danger')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Admin Required decorator
+def admin_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if 'role' in session and session['role'] == 'Administrator':
+            return f(*args, **kwargs)
+        else:
+            return render_template('not_access.html')
+    return wrapper
+
+# Role-Based Access decorator
+def role_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if 'role' not in session:
+                flash('Vous n\'avez pas les permissions pour accéder à cette page.', 'danger')
+                return redirect(url_for('login'))
+
+            user_role = session['role']
+            if user_role in roles or user_role == 'Administrator':
+                return f(*args, **kwargs)
+            else:
+                return render_template('not_access.html')
+        return wrapper
+    return decorator
+
 @app.route('/')
+@login_required
 def index():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM trading")
@@ -138,6 +177,8 @@ def index():
 
 # TRADING
 @app.route('/trading')
+@login_required
+@role_required('Trading')
 def trading():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM trading t JOIN personnels p ON t.personnel_id = p.id")
@@ -148,6 +189,8 @@ def trading():
     return render_template('trading.html', tradings=data_trading, personnels=data_personnels)
 
 @app.route('/trading/insert', methods=['POST'])
+@login_required
+@role_required('Trading')
 def insert_trading():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -178,6 +221,8 @@ def insert_trading():
     return redirect(url_for('trading'))
 
 @app.route('/trading/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Trading')
 def update_trading():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -209,6 +254,8 @@ def update_trading():
     return redirect(url_for('trading'))
 
 @app.route('/trading/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Trading')
 def delete_trading(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -219,6 +266,8 @@ def delete_trading(id_data):
 
 # ACADEMY
 @app.route('/academy')
+@login_required
+@role_required('Academy')
 def academy():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM academy t JOIN personnels p ON t.personnel_id = p.id")
@@ -229,6 +278,8 @@ def academy():
     return render_template('academy.html', academys=data_academy, personnels=data_personnels)
 
 @app.route('/academy/insert', methods=['POST'])
+@login_required
+@role_required('Academy')
 def insert_academy():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -259,6 +310,8 @@ def insert_academy():
     return redirect(url_for('academy'))
 
 @app.route('/academy/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Academy')
 def update_academy():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -290,6 +343,8 @@ def update_academy():
     return redirect(url_for('academy'))
 
 @app.route('/academy/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Academy')
 def delete_academy(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -300,6 +355,8 @@ def delete_academy(id_data):
 
 # DIGITAL
 @app.route('/digital')
+@login_required
+@role_required('Digital')
 def digital():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM digital t JOIN personnels p ON t.personnel_id = p.id")
@@ -310,6 +367,8 @@ def digital():
     return render_template('digital.html', digitals=data_digital, personnels=data_personnels)
 
 @app.route('/digital/insert', methods=['POST'])
+@login_required
+@role_required('Digital')
 def insert_digital():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -340,6 +399,8 @@ def insert_digital():
     return redirect(url_for('digital'))
 
 @app.route('/digital/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Digital')
 def update_digital():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -371,6 +432,8 @@ def update_digital():
     return redirect(url_for('digital'))
 
 @app.route('/digital/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Digital')
 def delete_digital(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -381,6 +444,8 @@ def delete_digital(id_data):
 
 # MATERIELS
 @app.route('/materiels')
+@login_required
+@role_required('Administrator')
 def materiels():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM materiels")
@@ -389,6 +454,8 @@ def materiels():
     return render_template('materiel.html', materiels=data_materiels)
 
 @app.route('/materiels/insert', methods=['POST'])
+@login_required
+@role_required('Administrator')
 def insert_materiels():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -413,6 +480,8 @@ def insert_materiels():
     return redirect(url_for('materiels'))
 
 @app.route('/materiels/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Administrator')
 def update_materiels():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -438,6 +507,8 @@ def update_materiels():
     return redirect(url_for('materiels'))
 
 @app.route('/materiels/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Administrator')
 def delete_materiels(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -449,6 +520,8 @@ def delete_materiels(id_data):
 
 # PERSONNELS
 @app.route('/personnels')
+@login_required
+@role_required('Administrator')
 def personnels():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM personnels")
@@ -457,6 +530,8 @@ def personnels():
     return render_template('personnel.html', personnels=data_personnels)
 
 @app.route('/personnels/insert', methods=['POST'])
+@login_required
+@role_required('Administrator')
 def insert_personnels():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -482,6 +557,8 @@ def insert_personnels():
     return redirect(url_for('personnels'))
 
 @app.route('/personnels/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Administrator')
 def update_personnels():
     if request.method == "POST":
         # Récupération des données du formulaire
@@ -537,6 +614,8 @@ def update_personnels():
 
 
 @app.route('/personnels/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Administrator')
 def delete_personnels(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -544,6 +623,37 @@ def delete_personnels(id_data):
     conn.commit()
     conn.close()
     return redirect(url_for('personnels'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    conn, cursor = init_db()
+    conn.commit()
+    conn.close()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        hashed_password = hash_password(password)
+        conn, cursor = init_db()
+        cursor.execute("SELECT * FROM personnels WHERE username=%s AND password=%s", (username, hashed_password))
+        user = cursor.fetchone()
+        conn.commit()
+        conn.close()        
+        if user:
+            session['id'] = user[0] # type: ignore
+            session['username'] = user[3] # type: ignore
+            session['role'] = user[12] # type: ignore
+            return redirect(url_for('index'))
+        else:
+            flash('Nom d\'utilisateur ou mot de passe incorrect', 'danger')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Vous êtes déconnecté', 'success')
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
