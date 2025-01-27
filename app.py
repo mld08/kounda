@@ -1,5 +1,6 @@
 from functools import wraps
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session
+import io
+from flask import Flask, Response, render_template, jsonify, request, redirect, url_for, flash, session
 import mysql.connector
 import hashlib
 from Models.trading import Trading
@@ -7,6 +8,7 @@ from Models.personnel import Personnel
 from Models.academy import Academy
 from Models.digital import Digital
 from Models.materiel import Materiel
+import pandas as pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -264,6 +266,28 @@ def delete_trading(id_data):
     conn.close()
     return redirect(url_for('trading'))
 
+@app.route('/export-trading')
+def export_trading():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM trading", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Trading')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=trading.xlsx'
+        }
+    )
+
 # ACADEMY
 @app.route('/academy')
 @login_required
@@ -352,6 +376,28 @@ def delete_academy(id_data):
     conn.commit()
     conn.close()
     return redirect(url_for('academy'))
+
+@app.route('/export-academy')
+def export_academy():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM academy", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Academy')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=academy.xlsx'
+        }
+    )
 
 # DIGITAL
 @app.route('/digital')
@@ -442,6 +488,29 @@ def delete_digital(id_data):
     conn.close()
     return redirect(url_for('digital'))
 
+@app.route('/export-digital')
+def export_digital():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM digital", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Digital')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=digital.xlsx'
+        }
+    )
+
+
 # MATERIELS
 @app.route('/materiels')
 @login_required
@@ -516,6 +585,28 @@ def delete_materiels(id_data):
     conn.commit()
     conn.close()
     return redirect(url_for('materiels'))
+
+@app.route('/export-materiels')
+def export_materiels():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM materiels", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Materiels')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=materiels.xlsx'
+        }
+    )
 
 
 # PERSONNELS
@@ -624,6 +715,29 @@ def delete_personnels(id_data):
     conn.close()
     return redirect(url_for('personnels'))
 
+@app.route('/export-personnels')
+def export_personnels():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM personnels", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Personnels')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=personnels.xlsx'
+        }
+    )
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     conn, cursor = init_db()
@@ -657,4 +771,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
