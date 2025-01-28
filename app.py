@@ -18,9 +18,9 @@ def hash_password(password):
 
 def init_db():
     conn = mysql.connector.connect(
-        host="localhost",
+        host="db",
         user="root",
-        password="",
+        password="password",
         database="bd_kounda"
     )
     cursor = conn.cursor()
@@ -30,7 +30,7 @@ def init_db():
             nom VARCHAR(20),
             prenom VARCHAR(50),
             username VARCHAR(25) UNIQUE,
-            email VARCHAR(25) UNIQUE,
+            email VARCHAR(50) UNIQUE,
             phone VARCHAR(15),
             departement ENUM ('Direction', 'Trading', 'Academy', 'Digital') DEFAULT 'Trading',
             date_arrivee DATE,

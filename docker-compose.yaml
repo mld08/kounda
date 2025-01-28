@@ -21,10 +21,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=bd_kounda
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=
+      - TZ=UTC
     volumes:
       - db_data:/var/lib/mysql
 
