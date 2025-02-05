@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kounda | Trading</title>
+    <title>Kunda | Trading</title>
     <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='slc-assets/img/logo/logo.png')}}" />
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.min.css')}}" />
 </head>
@@ -19,7 +19,7 @@
             <div>
                 <div class="brand-logo d-flex text-center align-items-center justify-content-between">
                     <a href="/" class="text-nowrap logo-img">
-                        <h1>Kounda</h1>
+                        <h1>KUNDA</h1>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -28,68 +28,96 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
                     <ul id="sidebarnav">
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Home</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-layout-dashboard"></i>
-                                </span>
-                                <span class="hide-menu">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Départements</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/trading" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-truck-delivery"></i>
-                                </span>
-                                <span class="hide-menu">Trading</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/academy" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-school"></i>
-                                </span>
-                                <span class="hide-menu">Academy</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/digital" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-cpu"></i>
-                                </span>
-                                <span class="hide-menu">Digital</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Ressources</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/materiels" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-device-desktop"></i>
-                                </span>
-                                <span class="hide-menu">Materiels</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="/personnels" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user-plus"></i>
-                                </span>
-                                <span class="hide-menu">Personnels</span>
-                            </a>
-                        </li>
+                      <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Home</span>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                          </span>
+                          <span class="hide-menu">Dashboard</span>
+                        </a>
+                      </li>
+                      <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Départements</span>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/trading" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-truck-delivery"></i>
+                          </span>
+                          <span class="hide-menu">Trading</span>
+                        </a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/academy" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-school"></i>
+                          </span>
+                          <span class="hide-menu">Academy</span>
+                        </a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/digital" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-cpu"></i>
+                          </span>
+                          <span class="hide-menu">Digital</span>
+                        </a>
+                      </li>
+                      <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Comptabilité</span>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/comptabilite-matiere" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-device-desktop"></i>
+                          </span>
+                          <span class="hide-menu">Comptabilité des Matières</span>
+                        </a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/comptabilite-financiere" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-coin"></i>
+                          </span>
+                          <span class="hide-menu">Comptabilité Financière</span>
+                        </a>
+                      </li>
+                      <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Ressources</span>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/projets" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-presentation"></i>
+                          </span>
+                          <span class="hide-menu">Projets</span>
+                        </a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/evenementiels" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-presentation-analytics"></i>
+                          </span>
+                          <span class="hide-menu">Evenementiels</span>
+                        </a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link" href="/personnels" aria-expanded="false">
+                          <span>
+                            <i class="ti ti-user-plus"></i>
+                          </span>
+                          <span class="hide-menu">Personnels</span>
+                        </a>
+                      </li>
                     </ul>
-                </nav>
+                  </nav>
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
@@ -215,7 +243,7 @@
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{trading.18}} {{trading.17}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{trading.19}} {{trading.18}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">

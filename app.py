@@ -8,19 +8,23 @@ from Models.personnel import Personnel
 from Models.academy import Academy
 from Models.digital import Digital
 from Models.materiel import Materiel
+from Models.finance import Finance
+from Models.evenementiel import Evenementiel
+from Models.projet import Projet
 import pandas as pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+application = app
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def init_db():
     conn = mysql.connector.connect(
-        host="db",
+        host="localhost",
         user="root",
-        password="password",
+        password="",
         database="bd_kounda"
     )
     cursor = conn.cursor()
@@ -123,6 +127,44 @@ def init_db():
             observations TEXT
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS finances (
+            id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+            date DATE,
+            libelle TEXT,
+            numero_compte VARCHAR(255),
+            credit FLOAT,
+            debit FLOAT,
+            montant_ht FLOAT,
+            tva FLOAT,
+            montant_ttc FLOAT,
+            observations TEXT
+        )
+    ''')
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS projets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nom VARCHAR(255) NOT NULL,
+        description TEXT,
+        date_debut DATE NOT NULL,
+        date_fin DATE,
+        budget FLOAT,
+        statut ENUM('en attente', 'en cours', 'terminé', 'annulé') NOT NULL DEFAULT 'en attente',
+        departement ENUM('Trading', 'Academy', 'Digital') NOT NULL 
+    )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS evenementiels (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nom VARCHAR(255) NOT NULL,
+        description TEXT,
+        date_debut DATE NOT NULL,
+        date_fin DATE,
+        budget FLOAT,
+        statut ENUM('en attente', 'en cours', 'terminé', 'annulé') NOT NULL DEFAULT 'en attente',
+        departement ENUM('Trading', 'Academy', 'Digital') NOT NULL 
+    )
+    """)
     cursor.execute("SELECT * FROM personnels WHERE role='Administrator' and username='admin' ")
     existing_admin = cursor.fetchone()
     if not existing_admin:
@@ -172,10 +214,32 @@ def role_required(*roles):
 @login_required
 def index():
     conn, cursor = init_db()
-    cursor.execute("SELECT * FROM trading")
-    data_trading = cursor.fetchall()
+    # Récupérer les statistiques des projets
+    cursor.execute("SELECT COUNT(*) FROM projets WHERE statut = 'En cours'")
+    projets_en_cours = cursor.fetchone()[0] # type: ignore
+
+    cursor.execute("SELECT COUNT(*) FROM projets WHERE statut = 'Terminé'")
+    projets_termines = cursor.fetchone()[0] # type: ignore
+
+    # Récupérer le nombre total d'événements
+    cursor.execute("SELECT COUNT(*) FROM evenementiels")
+    total_evenements = cursor.fetchone()[0] # type: ignore
+
+    # Récupérer la comptabilité financière (total des crédits et débits)
+    cursor.execute("SELECT SUM(credit) AS total_credit, SUM(debit) AS total_debit FROM finances")
+    result = cursor.fetchone()
+    total_credit, total_debit = result if result else (0, 0)
+
+    # Récupérer la comptabilité des matières (nombre total d'articles)
+    cursor.execute("SELECT COUNT(*) FROM materiels")
+    total_matieres = cursor.fetchone()[0] # type: ignore
     cursor.close()
-    return render_template('index.html', trading=data_trading)
+    return render_template('index.html', projets_en_cours=projets_en_cours,
+        projets_termines=projets_termines,
+        total_evenements=total_evenements,
+        total_credit=total_credit,
+        total_debit=total_debit,
+        total_matieres=total_matieres)
 
 # TRADING
 @app.route('/trading')
@@ -511,21 +575,21 @@ def export_digital():
     )
 
 
-# MATERIELS
-@app.route('/materiels')
+# COMPTABILITE MATIERE
+@app.route('/comptabilite-matiere')
 @login_required
-@role_required('Administrator')
-def materiels():
+@role_required('Digital')
+def comptabilite_matiere():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM materiels")
     data_materiels = cursor.fetchall()
     cursor.close()
-    return render_template('materiel.html', materiels=data_materiels)
+    return render_template('comptabilite-matiere.html', materiels=data_materiels)
 
-@app.route('/materiels/insert', methods=['POST'])
+@app.route('/comptabilite-matiere/insert', methods=['POST'])
 @login_required
-@role_required('Administrator')
-def insert_materiels():
+@role_required('Digital')
+def insert_comptabilite_matiere():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
         nom_produit = request.form['nom_produit']
@@ -546,12 +610,12 @@ def insert_materiels():
         conn.commit()
         conn.close()
     
-    return redirect(url_for('materiels'))
+    return redirect(url_for('comptabilite_matiere'))
 
-@app.route('/materiels/update', methods=['POST', 'GET'])
+@app.route('/comptabilite-matiere/update', methods=['POST', 'GET'])
 @login_required
-@role_required('Administrator')
-def update_materiels():
+@role_required('Digital')
+def update_comptabilite_matiere():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
         id_data = request.form['id']
@@ -573,12 +637,12 @@ def update_materiels():
         conn.commit()
         conn.close()
     
-    return redirect(url_for('materiels'))
+    return redirect(url_for('comptabilite_matiere'))
 
-@app.route('/materiels/delete/<string:id_data>', methods = ['POST', 'GET'])
+@app.route('/comptabilite-matiere/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
-@role_required('Administrator')
-def delete_materiels(id_data):
+@role_required('Digital')
+def delete_comptabilite_matiere(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
     cursor.execute("DELETE FROM materiels WHERE id=%s", (id_data,))
@@ -586,7 +650,7 @@ def delete_materiels(id_data):
     conn.close()
     return redirect(url_for('materiels'))
 
-@app.route('/export-materiels')
+@app.route('/export-comptabilite-matiere')
 def export_materiels():
     conn, cursor = init_db()
     # Charger les données depuis la base de données dans un DataFrame
@@ -596,7 +660,7 @@ def export_materiels():
     # Créer un fichier Excel en mémoire
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Materiels')
+        df.to_excel(writer, index=False, sheet_name='Comptabilité Matière')
     output.seek(0)  # Revenir au début du fichier mémoire
 
     # Retourner le fichier pour téléchargement
@@ -604,10 +668,268 @@ def export_materiels():
         output,
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         headers={
-            'Content-Disposition': 'attachment;filename=materiels.xlsx'
+            'Content-Disposition': 'attachment;filename=comptabilite-matiere.xlsx'
         }
     )
 
+# COMPTABILITE FINANCIERE
+@app.route('/comptabilite-financiere')
+@login_required
+@role_required('Digital')
+def comptabilite_financiere():
+    conn, cursor = init_db()
+    cursor.execute("SELECT * FROM finances")
+    data_finances = cursor.fetchall()
+    cursor.close()
+    return render_template('comptabilite-financiere.html', finances=data_finances)
+
+@app.route('/comptabilite-financiere/insert', methods=['POST'])
+@login_required
+@role_required('Digital')
+def insert_comptabilite_financiere():
+    if request.method == "POST":
+        flash('Dossier créé avec succés!')
+        date = request.form['date']
+        libelle = request.form['libelle']
+        numero_compte = request.form['numero_compte']
+        credit = float(request.form['credit'])
+        debit = float(request.form['debit'])
+        # Calculer Montants HT et TTC côté serveur
+        montant_ht = float(request.form['montant_ht'])
+        taux_tva = 0.18  # TVA à 18% 
+        tva = montant_ht * taux_tva
+        montant_ttc = montant_ht * (1 + taux_tva)
+        observations = request.form['observations']
+        conn, cursor = init_db()
+        finances = Finance(None, date, libelle, numero_compte, credit, debit, montant_ht, tva, montant_ttc, observations)
+        finances.save(cursor)
+        conn.commit()
+        conn.close()
+    
+    return redirect(url_for('comptabilite_financiere'))
+
+@app.route('/comptabilite-financiere/update', methods=['POST', 'GET'])
+@login_required
+@role_required('Digital')
+def update_comptabilite_financiere():
+    if request.method == "POST":
+        flash('Dossier modifié avec succés!')
+        id_data = request.form['id']
+        date = request.form['date']
+        libelle = request.form['libelle']
+        numero_compte = request.form['numero_compte']
+        credit = float(request.form['credit'])
+        debit = float(request.form['debit'])
+        # Calculer Montants HT et TTC côté serveur
+        montant_ht = float(request.form['montant_ht'])
+        taux_tva = 0.18  # TVA à 18% 
+        tva = montant_ht * taux_tva
+        montant_ttc = montant_ht * (1 + taux_tva)
+        observations = request.form['observations']
+        conn, cursor = init_db()
+        finances = Finance(id_data, date, libelle, numero_compte, credit, debit, montant_ht, tva, montant_ttc, observations)
+        finances.update(cursor)
+        conn.commit()
+        conn.close()
+    
+    return redirect(url_for('comptabilite_financiere'))
+
+@app.route('/comptabilite-financiere/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+@role_required('Digital')
+def delete_comptabilite_financiere(id_data):
+    conn, cursor = init_db()
+    flash('Dossier supprimé avec succés')
+    cursor.execute("DELETE FROM finances WHERE id=%s", (id_data,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('comptabilite_financiere'))
+
+@app.route('/export-comptabilite-financiere')
+def export_finances():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM finances", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Comptabilité Financière')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=comptabilite-financiere.xlsx'
+        }
+    )
+
+# PROJETS
+@app.route('/projets')
+@login_required
+def projets():
+    conn, cursor = init_db()
+    cursor.execute("SELECT * FROM projets")
+    data_projets = cursor.fetchall()
+    cursor.close()
+    return render_template('projet.html', projets=data_projets)
+
+@app.route('/projets/insert', methods=['POST'])
+@login_required
+def insert_projet():
+    if request.method == "POST":
+        flash('Dossier créé avec succés!')
+        nom = request.form['nom']
+        description = request.form['description']
+        date_debut = request.form['date_debut']
+        date_fin = request.form['date_fin'] or None
+        budget = float(request.form['budget'])
+        statut = request.form['statut']
+        departement = request.form['departement']
+        conn, cursor = init_db()
+        projets = Projet(None, nom, description, date_debut, date_fin, budget, statut, departement)
+        projets.save(cursor)
+        conn.commit()
+        conn.close()
+    return redirect(url_for('projets'))
+
+@app.route('/projets/update', methods=['POST', 'GET'])
+@login_required
+def update_projet():
+    if request.method == "POST":
+        flash('Dossier modifié avec succés!')
+        id_data = request.form['id']
+        nom = request.form['nom']
+        description = request.form['description']
+        date_debut = request.form['date_debut']
+        date_fin = request.form['date_fin'] or None
+        budget = float(request.form['budget']) or 0
+        statut = request.form['statut']
+        departement = request.form['departement']
+        conn, cursor = init_db()
+        projets = Projet(id_data, nom, description, date_debut, date_fin, budget, statut, departement)
+        projets.update(cursor)
+        conn.commit()
+        conn.close()
+    
+    return redirect(url_for('projets'))
+
+@app.route('/projets/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+def delete_projet(id_data):
+    conn, cursor = init_db()
+    flash('Dossier supprimé avec succés')
+    cursor.execute("DELETE FROM projets WHERE id=%s", (id_data,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('projets'))
+
+@app.route('/export-projets')
+def export_projets():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM projets", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Projets')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=projets.xlsx'
+        }
+    )
+
+# EVENEMENTIELS
+@app.route('/evenementiels')
+@login_required
+def evenementiels():
+    conn, cursor = init_db()
+    cursor.execute("SELECT * FROM evenementiels")
+    data_evenementiels = cursor.fetchall()
+    cursor.close()
+    return render_template('evenementiel.html', evenementiels=data_evenementiels)
+
+@app.route('/evenementiels/insert', methods=['POST'])
+@login_required
+def insert_evenementiel():
+    if request.method == "POST":
+        flash('Dossier créé avec succés!')
+        nom = request.form['nom']
+        description = request.form['description']
+        date_debut = request.form['date_debut']
+        date_fin = request.form['date_fin'] or None
+        budget = float(request.form['budget'])
+        statut = request.form['statut']
+        departement = request.form['departement']
+        conn, cursor = init_db()
+        evenementiels = Evenementiel(None, nom, description, date_debut, date_fin, budget, statut, departement)
+        evenementiels.save(cursor)
+        conn.commit()
+        conn.close()
+    return redirect(url_for('evenementiels'))
+
+@app.route('/evenementiels/update', methods=['POST', 'GET'])
+@login_required
+def update_evenementiel():
+    if request.method == "POST":
+        flash('Dossier modifié avec succés!')
+        id_data = request.form['id']
+        nom = request.form['nom']
+        description = request.form['description']
+        date_debut = request.form['date_debut']
+        date_fin = request.form['date_fin'] or None
+        budget = float(request.form['budget']) or 0
+        statut = request.form['statut']
+        departement = request.form['departement']
+        conn, cursor = init_db()
+        evenementiels = Evenementiel(id_data, nom, description, date_debut, date_fin, budget, statut, departement)
+        evenementiels.update(cursor)
+        conn.commit()
+        conn.close()
+    
+    return redirect(url_for('projets'))
+
+@app.route('/evenementiels/delete/<string:id_data>', methods = ['POST', 'GET'])
+@login_required
+def delete_evenementiel(id_data):
+    conn, cursor = init_db()
+    flash('Dossier supprimé avec succés')
+    cursor.execute("DELETE FROM evenementiels WHERE id=%s", (id_data,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('evenementiels'))
+
+@app.route('/export-evenementiels')
+def export_evenementiels():
+    conn, cursor = init_db()
+    # Charger les données depuis la base de données dans un DataFrame
+    df = pd.read_sql_query("SELECT * FROM evenementiels", conn)
+    cursor.close()
+    
+    # Créer un fichier Excel en mémoire
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Evenementiels')
+    output.seek(0)  # Revenir au début du fichier mémoire
+
+    # Retourner le fichier pour téléchargement
+    return Response(
+        output,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={
+            'Content-Disposition': 'attachment;filename=evenementiels.xlsx'
+        }
+    )
 
 # PERSONNELS
 @app.route('/personnels')
@@ -768,6 +1090,49 @@ def logout():
     session.clear()
     flash('Vous êtes déconnecté', 'success')
     return redirect(url_for('login'))
+
+@app.route('/api/dashboard-data')
+def dashboard_data():
+    conn, cursor = init_db()
+
+    # Récupérer les données financières
+    cursor.execute("SELECT SUM(credit), SUM(debit) FROM finances")
+    total_credit, total_debit = cursor.fetchone() # type: ignore
+    
+    # Récupérer les ventes et dépenses par mois
+    cursor.execute("SELECT DATE_FORMAT(date, '%d/%m') AS jour, SUM(credit), SUM(debit) FROM finances GROUP BY jour ORDER BY date ASC LIMIT 8")
+    finance_data = cursor.fetchall()
+    dates, credits, debits = zip(*finance_data) if finance_data else ([], [], [])
+
+    # Récupérer les projets par statut
+    cursor.execute("SELECT statut, COUNT(*) FROM projets GROUP BY statut")
+    projets_data = dict(cursor.fetchall()) # type: ignore
+
+    # Récupérer les 7 derniers jours de transactions (crédit - débit par jour)
+    cursor.execute("""
+        SELECT DATE_FORMAT(date, '%d/%m') AS jour, SUM(credit) - SUM(debit) AS earnings
+        FROM finances
+        GROUP BY jour
+        ORDER BY date DESC
+        LIMIT 7
+    """)
+    earning_results = cursor.fetchall()
+
+    # Transformer les résultats en listes
+    dates, earnings = zip(*earning_results) if earning_results else ([], [])
+
+    conn.close()
+
+    return jsonify({
+        "dates": list(dates),
+        "earnings": list(credits),
+        "expenses": list(debits),
+        "total_credit": total_credit or 0,
+        "total_debit": total_debit or 0,
+        "projets": projets_data,
+        "dates": list(dates),
+        "gains": list(earnings)
+    })
 
 
 if __name__ == "__main__":

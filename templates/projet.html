@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kounda | Matériels</title>
+    <title>Kunda | Projets</title>
     <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='slc-assets/img/logo/logo.png')}}" />
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.min.css')}}" />
 </head>
@@ -19,7 +19,7 @@
             <div>
                 <div class="brand-logo d-flex text-center align-items-center justify-content-between">
                     <a href="/" class="text-nowrap logo-img">
-                        <h1>Kounda</h1>
+                        <h1>KUNDA</h1>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -70,14 +70,42 @@
                         </li>
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Ressources</span>
+                            <span class="hide-menu">Comptabilité</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="/materiels" aria-expanded="false">
+                            <a class="sidebar-link" href="/comptabilite-matiere" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-device-desktop"></i>
                                 </span>
-                                <span class="hide-menu">Materiels</span>
+                                <span class="hide-menu">Comptabilité des Matières</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/comptabilite-financiere" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-coin"></i>
+                                </span>
+                                <span class="hide-menu">Comptabilité Financière</span>
+                            </a>
+                        </li>
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">Ressources</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/projets" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-presentation"></i>
+                                </span>
+                                <span class="hide-menu">Projets</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/evenementiels" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-presentation-analytics"></i>
+                                </span>
+                                <span class="hide-menu">Evenementiels</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
@@ -140,10 +168,10 @@
                 <div class="card w-100">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title fw-semibold mb-4">Materiels</h5>
-                            <a href="/export-materiels" class="btn btn-success">Exporter en excel</a>
+                            <h5 class="card-title fw-semibold mb-4">Projets</h5>
+                            <a href="/export-projets" class="btn btn-success">Exporter en excel</a>
                             <a href="#" class="btn btn-primary text-end" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">Ajouter un dossier</a>
+                                data-bs-target="#exampleModal">Ajouter un projet</a>
                         </div>
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
@@ -162,31 +190,25 @@
                                             <h6 class="fw-semibold mb-0">#</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Nom produit</h6>
+                                            <h6 class="fw-semibold mb-0">Nom</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Fournisseur</h6>
+                                            <h6 class="fw-semibold mb-0">Description</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Date de sortie</h6>
+                                            <h6 class="fw-semibold mb-0">Date Début</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Date de réception</h6>
+                                            <h6 class="fw-semibold mb-0">Date Fin</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Quantité</h6>
+                                            <h6 class="fw-semibold mb-0">Budget</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Prix unitaire</h6>
+                                            <h6 class="fw-semibold mb-0">Département</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Montant HT</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Montant TTC</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Observations</h6>
+                                            <h6 class="fw-semibold mb-0">Statut</h6>
                                         </th>
                                         <th class="border-bottom-0">
                                             <h6 class="fw-semibold mb-0">Actions</h6>
@@ -194,59 +216,58 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for materiel in materiels %}
+                                    {% for projet in projets %}
                                     <tr>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">{{materiel.0}}</h6>
+                                            <h6 class="fw-semibold mb-0">{{projet.0}}</h6>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.1}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.1}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.2}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.2}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.3}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.3}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.4}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.4}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.4}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.5}} FCFA</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{materiel.5}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{projet.7}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.6}} FCFA</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.7}} FCFA</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.9}} FCFA</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.10}}</h6>
+                                            {% if projet.6 == "en attente" %}
+                                            <p class="badge bg-warning text-dark fw-semibold">{{ projet.6 }}</p>
+                                            {% elif projet.6 == "en cours" %}
+                                            <p class="badge bg-primary fw-semibold">{{ projet.6 }}</p>
+                                            {% elif projet.6 == "terminé" %}
+                                            <p class="badge bg-success fw-semibold">{{ projet.6 }}</p>
+                                            {% elif projet.6 == "annulé" %}
+                                            <p class="badge bg-danger fw-semibold">{{ projet.6 }}</p>
+                                            {% else %}
+                                            <p class="badge bg-secondary fw-semibold">{{ projet.6 }}</p>
+                                            {% endif %}
                                         </td>
                                         <td>
-                                            <a href="/materiel/update/{{materiel.0}}" class="btn btn-primary m-1"
+                                            <a href="/projets/update/{{projet.0}}" class="btn btn-primary m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#modaledit{{materiel.0}}">Modifier</a>
-                                            <a href="/materiel/delete/{{materiel.0}}" class="btn btn-danger m-1"
-                                                onclick="return confirm('Êtes vous sûr de vouloir supprimer ?')">Supprimer</button>
+                                                data-bs-target="#modaledit{{projet.0}}">Modifier</a>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -270,58 +291,51 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un dossier materiel</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un projet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('insert_materiels')}}" method="post">
+                    <form action="{{url_for('insert_projet')}}" method="post">
                         <div class="mb-3">
-                            <label for="nom_produit" class="form-label">Nom Produit</label>
-                            <input type="text" class="form-control" id="nom_produit" name="nom_produit" required>
+                            <label for="nom" class="form-label">Nom du projet</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
                         </div>
                         <div class="mb-3">
-                            <label for="fournisseur" class="form-label">Fournisseur</label>
-                            <input type="text" class="form-control" id="fournisseur" name="fournisseur" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="date_sortie" class="form-label">Date de sortie</label>
-                            <input type="date" class="form-control" id="date_sortie" name="date_sortie" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="date_reception" class="form-label">Date de réception</label>
-                            <input type="date" class="form-control" id="date_reception" name="date_reception" required>
+                            <label for="description" class="form-label">Description du projet</label>
+                            <textarea name="description" class="form-control" id="description"></textarea>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite"
-                                    oninput="calculateMontants()" required>
+                                <label for="date_debut" class="form-label">Date début</label>
+                                <input type="date" class="form-control" id="date_debut" name="date_debut" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
-                                    oninput="calculateMontants()" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
-                                    readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="tva" class="form-label">Montant TVA</label>
-                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
-                                    name="montant_ttc" readonly>
+                                <label for="date_fin" class="form-label">Date fin</label>
+                                <input type="date" class="form-control" id="date_fin" name="date_fin" >
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="observations" class="form-label">Observations</label>
-                            <textarea class="form-control" name="observations" id="observations"></textarea>
+                            <label for="departement" class="form-label">Département</label>
+                            <select class="form-select" name="departement" id="departement">
+                                <option value="Trading">Trading</option>
+                                <option value="Academy">Academy</option>
+                                <option value="Digital">Digital</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="budget" class="form-label">Budget</label>
+                                <input type="number" class="form-control" id="budget" name="budget" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="statut" class="form-label">Statut</label>
+                                <select class="form-select" name="statut" id="statut">
+                                    <option value="en attente">En attente</option>
+                                    <option value="en cours">En cours</option>
+                                    <option value="terminé">Terminé</option>
+                                    <option value="annulé">Annulé</option>
+                                </select>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -335,72 +349,68 @@
     </div>
 
     <!-- Edit materiel Modal -->
-    {% for materiel in materiels %}
-    <div class="modal fade" id="modaledit{{materiel.0}}" tabindex="-1" role="dialog" aria-labelledby="modaleditLabel"
+    {% for projet in projets %}
+    <div class="modal fade" id="modaledit{{projet.0}}" tabindex="-1" role="dialog" aria-labelledby="modaleditLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modifier un dossier materiel</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier un projet</h5>
                     <button type="button" class="btn-close ml-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('update_materiels')}}" method="post">
+                    <form action="{{url_for('update_projet')}}" method="post">
                         <div class="mb-3">
-                            <label for="nom_produit" class="form-label">Nom Produit</label>
-                            <input type="hidden" name="id" value="{{materiel.0}}">
-                            <input type="text" class="form-control" id="nom_produit" name="nom_produit"
-                                value="{{materiel.1}}">
+                            <label for="nom" class="form-label">Nom du projet</label>
+                            <input type="hidden" name="id" value="{{projet.0}}">
+                            <input type="text" class="form-control" id="nom" name="nom" value="{{projet.1}}">
                         </div>
                         <div class="mb-3">
-                            <label for="fournisseur" class="form-label">Fournisseur</label>
-                            <input type="text" class="form-control" id="fournisseur" name="fournisseur"
-                                value="{{materiel.2}}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="date_sortie" class="form-label">Date de sortie</label>
-                            <input type="date" class="form-control" id="date_sortie" name="date_sortie"
-                                value="{{materiel.3}}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="date_reception" class="form-label">Date de réception</label>
-                            <input type="date" class="form-control" id="date_reception" name="date_reception"
-                                value="{{materiel.4}}">
+                            <label for="description" class="form-label">Description du projet</label>
+                            <input type="text" class="form-control" id="description" name="description"
+                                value="{{projet.2}}">
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite"
-                                    oninput="calculateMontants()" value="{{materiel.5}}">
+                                <label for="date_debut" class="form-label">Date début</label>
+                                <input type="date" class="form-control" id="date_debut" name="date_debut"
+                                    value="{{projet.3}}">
                             </div>
                             <div class="col-md-6">
-                                <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
-                                    oninput="calculateMontants()" value="{{materiel.6}}">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
-                                    readonly value="{{materiel.7}}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="tva" class="form-label">Montant TVA</label>
-                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly
-                                    value="{{materiel.8}}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
-                                    name="montant_ttc" readonly value="{{materiel.9}}">
+                                <label for="date_fin" class="form-label">Date fin</label>
+                                <input type="date" class="form-control" id="date_fin" name="date_fin"
+                                    value="{{projet.4}}">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="observations" class="form-label">Observations</label>
-                            <textarea class="form-control" name="observations"
-                                id="observations">{{materiel.10}}</textarea>
+                            <label for="departement" class="form-label">Département</label>
+                            <select class="form-select" name="departement" id="departement">
+                                <option value="Trading" {%if projet.7=='Trading' %} selected {%endif%}>Trading
+                                </option>
+                                <option value="Academy" {%if projet.7=='Academy' %} selected {%endif%}>Academy
+                                </option>
+                                <option value="Digital" {%if projet.7=='Digital' %} selected {%endif%}>Digital
+                                </option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="budget" class="form-label">Budget</label>
+                                <input type="number" class="form-control" id="budget" name="budget"
+                                    value="{{projet.5}}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="statut" class="form-label">Statut</label>
+                                <select class="form-select" name="statut" id="statut">
+                                    <option value="en attente" {%if projet.6=="en attente" %} selected {%endif%}>En
+                                        attente</option>
+                                    <option value="en cours" {%if projet.6=="en cours" %} selected {%endif%}>En cours
+                                    </option>
+                                    <option value="terminé" {%if projet.6=="terminé" %} selected {%endif%}>Terminé
+                                    </option>
+                                    <option value="annulé" {%if projet.6=="annulé" %} selected {%endif%}>Annulé</option>
+                                </select>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -421,22 +431,6 @@
     <script src="{{url_for('static', filename='libs/apexcharts/dist/apexcharts.min.js')}}"></script>
     <script src="{{url_for('static', filename='libs/simplebar/dist/simplebar.js')}}"></script>
     <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
-    <script>
-        function calculateMontants() {
-            const quantite = parseFloat(document.getElementById('quantite').value) || 0;
-            const prixUnit = parseFloat(document.getElementById('prix_unit').value) || 0;
-            const tauxTva = 0.18; // Par exemple, 20% de TVA
-
-            const montantHt = quantite * prixUnit;
-            const montantTva = montantHt * tauxTva
-            const montantTtc = montantHt * (1 + tauxTva);
-
-            // Mettre à jour les champs Montant HT et TTC
-            document.getElementById('montant_ht').value = montantHt.toFixed(2);
-            document.getElementById('tva').value = montantTva.toFixed(2);
-            document.getElementById('montant_ttc').value = montantTtc.toFixed(2);
-        }
-    </script>
 </body>
 
 </html>

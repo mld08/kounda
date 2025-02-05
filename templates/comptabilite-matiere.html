@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kounda | Digital</title>
+    <title>Kounda | Comptabilité Matières</title>
     <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='slc-assets/img/logo/logo.png')}}" />
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.min.css')}}" />
 </head>
@@ -19,7 +19,7 @@
             <div>
                 <div class="brand-logo d-flex text-center align-items-center justify-content-between">
                     <a href="/" class="text-nowrap logo-img">
-                        <h1>KUNDA</h1>
+                        <h1>Kounda</h1>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -168,8 +168,8 @@
                 <div class="card w-100">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title fw-semibold mb-4">Digital</h5>
-                            <a href="/export-digital" class="btn btn-success">Exporter en excel</a>
+                            <h5 class="card-title fw-semibold mb-4">Comptabilité Matière</h5>
+                            <a href="/export-comptabilite-matiere" class="btn btn-success">Exporter en excel</a>
                             <a href="#" class="btn btn-primary text-end" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">Ajouter un dossier</a>
                         </div>
@@ -190,22 +190,16 @@
                                             <h6 class="fw-semibold mb-0">#</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Date de constitution</h6>
+                                            <h6 class="fw-semibold mb-0">Nom produit</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Responsable</h6>
+                                            <h6 class="fw-semibold mb-0">Fournisseur</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Type de libellé</h6>
+                                            <h6 class="fw-semibold mb-0">Date de sortie</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Prénom & Nom du client</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Contact client</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Articles</h6>
+                                            <h6 class="fw-semibold mb-0">Date de réception</h6>
                                         </th>
                                         <th class="border-bottom-0">
                                             <h6 class="fw-semibold mb-0">Quantité</h6>
@@ -220,9 +214,6 @@
                                             <h6 class="fw-semibold mb-0">Montant TTC</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Modalité et type de paiement</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
                                             <h6 class="fw-semibold mb-0">Observations</h6>
                                         </th>
                                         <th class="border-bottom-0">
@@ -231,65 +222,58 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for digital in digitals %}
+                                    {% for materiel in materiels %}
                                     <tr>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">{{digital.0}}</h6>
+                                            <h6 class="fw-semibold mb-0">{{materiel.0}}</h6>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.1}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.1}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.19}} {{digital.18}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.2}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.3}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.3}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.5}} {{digital.4}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.4}}</h6>
                                             </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">{{digital.7}}</h6>
-                                            <span class="fw-normal">{{digital.6}}</span>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.8}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.4}}</h6>
                                             </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{digital.9}}</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{digital.10}} FCFA</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{digital.11}} FCFA</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{digital.13}} FCFA</h6>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <h6 class="fw-semibold mb-1">{{digital.14}} - {{digital.15}}</h6>
+                                                <h6 class="fw-semibold mb-1">{{materiel.5}}</h6>
                                             </div>
                                         </td>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">{{digital.16}}</h6>
+                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.6}} FCFA</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.7}} FCFA</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.9}} FCFA</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0 fs-4">{{materiel.10}}</h6>
                                         </td>
                                         <td>
-                                            <a href="/digital/update/{{digital.0}}" class="btn btn-primary m-1"
+                                            <a href="/comptabilite-matiere/update/{{materiel.0}}" class="btn btn-primary m-1"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#modaledit{{digital.0}}">Modifier</a>
-                                            <a href="/digital/delete/{{digital.0}}" class="btn btn-danger m-1"
+                                                data-bs-target="#modaledit{{materiel.0}}">Modifier</a>
+                                            <a href="/comptabilite-matiere/delete/{{materiel.0}}" class="btn btn-danger m-1"
                                                 onclick="return confirm('Êtes vous sûr de vouloir supprimer ?')">Supprimer</button>
                                         </td>
                                     </tr>
@@ -308,101 +292,59 @@
         </div>
     </div>
 
-    <!-- Add digital Modal -->
+    <!-- Add materiel Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un dossier digital</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un dossier materiel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('insert_digital')}}" method="post">
+                    <form action="{{url_for('insert_comptabilite_matiere')}}" method="post">
                         <div class="mb-3">
-                            <label for="date_const" class="form-label">Date de construction</label>
-                            <input type="date" class="form-control" id="date_const" name="date_const" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="personnel_id" class="form-label">Membre du personnel</label>
-                            <select class="form-select" id="personnel_id" name="personnel_id" required>
-                                <option value="" selected disabled>Choisir un membre</option>
-                                {% for personnel in personnels %}
-                                <option value="{{ personnel.0 }}">{{ personnel.2 }} {{ personnel.1 }}</option>
-                                {% endfor %}
-                            </select>
+                            <label for="nom_produit" class="form-label">Nom Produit</label>
+                            <input type="text" class="form-control" id="nom_produit" name="nom_produit" required>
                         </div>
                         <div class="mb-3">
-                            <label for="type_libelle" class="form-label">Type de libellé</label>
-                            <input type="text" class="form-control" id="type_libelle" name="type_libelle" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="nom_client" class="form-label">Nom Client</label>
-                                <input type="text" class="form-control" id="nom_client" name="nom_client" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="prenom_client" class="form-label">Prenom Client</label>
-                                <input type="text" class="form-control" id="prenom_client" name="prenom_client"
-                                    required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="phone_client" class="form-label">Phone Client</label>
-                                <input type="text" class="form-control" id="phone_client" name="phone_client" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email_client" class="form-label">Email Client</label>
-                                <input type="text" class="form-control" id="email_client" name="email_client" required>
-                            </div>
+                            <label for="fournisseur" class="form-label">Fournisseur</label>
+                            <input type="text" class="form-control" id="fournisseur" name="fournisseur" required>
                         </div>
                         <div class="mb-3">
-                            <label for="items" class="form-label">Articles(items)</label>
-                            <input type="text" class="form-control" id="items" name="items" required>
+                            <label for="date_sortie" class="form-label">Date de sortie</label>
+                            <input type="date" class="form-control" id="date_sortie" name="date_sortie" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date_reception" class="form-label">Date de réception</label>
+                            <input type="date" class="form-control" id="date_reception" name="date_reception" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite"
-                                    oninput="calculateMontants()" required>
+                                <input type="number" class="form-control quantite" id="quantite" name="quantite"
+                                    oninput="calculateMontants(this)" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
-                                    oninput="calculateMontants()" required>
+                                <input type="number" class="form-control prix_unit" id="prix_unit" name="prix_unit"
+                                    oninput="calculateMontants(this)" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
+                                <input type="number" step="0.01" class="form-control montant_ht" id="montant_ht" name="montant_ht"
                                     readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="tva" class="form-label">Montant TVA</label>
-                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly>
+                                <input type="number" step="0.01" class="form-control tva" id="tva" name="tva" readonly>
                             </div>
                             <div class="col-md-4">
                                 <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
+                                <input type="number" step="0.01" class="form-control montant_ttc" id="montant_ttc"
                                     name="montant_ttc" readonly>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="modalite_paiement" class="form-label">Modalité de paiement</label>
-                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement"
-                                    required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="type_paiement" class="form-label">Type de paiement</label>
-                                <select class="form-select" name="type_paiement" id="type_paiement">
-                                    <option value="Virement bancaire">Virement bancaire</option>
-                                    <option value="Cheque">Cheque</option>
-                                    <option value="Especes">Especes</option>
-                                    <option value="Paiement mobile">Paiement mobile</option>
-                                </select>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -420,120 +362,73 @@
         </div>
     </div>
 
-    <!-- Edit digital Modal -->
-    {% for digital in digitals %}
-    <div class="modal fade" id="modaledit{{digital.0}}" tabindex="-1" role="dialog" aria-labelledby="modaleditLabel"
+    <!-- Edit materiel Modal -->
+    {% for materiel in materiels %}
+    <div class="modal fade" id="modaledit{{materiel.0}}" tabindex="-1" role="dialog" aria-labelledby="modaleditLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modifier un dossier digital</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier un dossier materiel</h5>
                     <button type="button" class="btn-close ml-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('update_digital')}}" method="post">
+                    <form action="{{url_for('update_comptabilite_matiere')}}" method="post">
                         <div class="mb-3">
-                            <label for="date_const" class="form-label">Date de construction</label>
-                            <input type="hidden" name="id" value="{{digital.0}}">
-                            <input type="date" class="form-control" id="date_const" name="date_const"
-                                value="{{digital.1}}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="personnel_id" class="form-label">Membre du personnel</label>
-                            <select class="form-select" id="personnel_id" name="personnel_id" required>
-                                <option value="" selected disabled>Choisir un membre</option>
-                                {% for personnel in personnels %}
-                                <option value="{{ personnel.0 }}" {%if personnel.0==digital.2%} selected {%endif%}>{{
-                                    personnel.2 }} {{ personnel.1 }}</option>
-                                {% endfor %}
-                            </select>
+                            <label for="nom_produit" class="form-label">Nom Produit</label>
+                            <input type="hidden" name="id" value="{{materiel.0}}">
+                            <input type="text" class="form-control" id="nom_produit" name="nom_produit"
+                                value="{{materiel.1}}">
                         </div>
                         <div class="mb-3">
-                            <label for="type_libelle" class="form-label">Type de libellé</label>
-                            <input type="text" class="form-control" id="type_libelle" name="type_libelle"
-                                value="{{digital.3}}">
+                            <label for="fournisseur" class="form-label">Fournisseur</label>
+                            <input type="text" class="form-control" id="fournisseur" name="fournisseur"
+                                value="{{materiel.2}}">
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="nom_client" class="form-label">Nom Client</label>
-                                <input type="text" class="form-control" id="nom_client" name="nom_client"
-                                    value="{{digital.4}}">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="prenom_client" class="form-label">Prenom Client</label>
-                                <input type="text" class="form-control" id="prenom_client" name="prenom_client"
-                                    value="{{digital.5}}">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="phone_client" class="form-label">Phone Client</label>
-                                <input type="text" class="form-control" id="phone_client" name="phone_client"
-                                    value="{{digital.6}}">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email_client" class="form-label">Email Client</label>
-                                <input type="text" class="form-control" id="email_client" name="email_client"
-                                    value="{{digital.7}}">
-                            </div>
+
+                        <div class="mb-3">
+                            <label for="date_sortie" class="form-label">Date de sortie</label>
+                            <input type="date" class="form-control" id="date_sortie" name="date_sortie"
+                                value="{{materiel.3}}">
                         </div>
                         <div class="mb-3">
-                            <label for="items" class="form-label">Articles(items)</label>
-                            <input type="text" class="form-control" id="items" name="items" value="{{digital.8}}">
+                            <label for="date_reception" class="form-label">Date de réception</label>
+                            <input type="date" class="form-control" id="date_reception" name="date_reception"
+                                value="{{materiel.4}}">
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="quantite" class="form-label">Quantité</label>
-                                <input type="number" class="form-control" id="quantite" name="quantite"
-                                    oninput="calculateMontants()" value="{{digital.9}}">
+                                <input type="number" class="form-control quantite" id="quantite" name="quantite"
+                                    oninput="calculateMontants(this)" value="{{materiel.5}}">
                             </div>
                             <div class="col-md-6">
                                 <label for="prix_unit" class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" id="prix_unit" name="prix_unit"
-                                    oninput="calculateMontants()" value="{{digital.10}}">
+                                <input type="number" class="form-control prix_unit" id="prix_unit" name="prix_unit"
+                                    oninput="calculateMontants(this)" value="{{materiel.6}}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="montant_ht" class="form-label">Montant HT</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ht" name="montant_ht"
-                                    readonly value="{{digital.11}}">
+                                <input type="number" step="0.01" class="form-control montant_ht" id="montant_ht" name="montant_ht"
+                                    readonly value="{{materiel.7}}">
                             </div>
                             <div class="col-md-4">
                                 <label for="tva" class="form-label">Montant TVA</label>
-                                <input type="number" step="0.01" class="form-control" id="tva" name="tva" readonly
-                                    value="{{digital.12}}">
+                                <input type="number" step="0.01" class="form-control tva" id="tva" name="tva" readonly
+                                    value="{{materiel.8}}">
                             </div>
                             <div class="col-md-4">
                                 <label for="montant_ttc" class="form-label">Montant TTC</label>
-                                <input type="number" step="0.01" class="form-control" id="montant_ttc"
-                                    name="montant_ttc" readonly value="{{digital.13}}">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="modalite_paiement" class="form-label">Modalité de paiement</label>
-                                <input type="text" class="form-control" id="modalite_paiement" name="modalite_paiement"
-                                    value="{{digital.14}}">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="type_paiement" class="form-label">Type de paiement</label>
-                                <select class="form-select" name="type_paiement" id="type_paiement">
-                                    <option value="Virement bancaire" {%if digital.15=='Virement bancaire' %} selected
-                                        {%endif%}>Virement bancaire</option>
-                                    <option value="Cheque" {%if digital.15=='Cheque' %} selected {%endif%}>Cheque
-                                    </option>
-                                    <option value="Especes" {%if digital.15=='Especes' %} selected {%endif%}>Especes
-                                    </option>
-                                    <option value="Paiement mobile" {%if digital.15=='Paiement mobile' %} selected
-                                        {%endif%}>Paiement mobile</option>
-                                </select>
+                                <input type="number" step="0.01" class="form-control montant_ttc" id="montant_ttc"
+                                    name="montant_ttc" readonly value="{{materiel.9}}">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="observations" class="form-label">Observations</label>
                             <textarea class="form-control" name="observations"
-                                id="observations">{{digital.16}}</textarea>
+                                id="observations">{{materiel.10}}</textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -555,19 +450,22 @@
     <script src="{{url_for('static', filename='libs/simplebar/dist/simplebar.js')}}"></script>
     <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
     <script>
-        function calculateMontants() {
-            const quantite = parseFloat(document.getElementById('quantite').value) || 0;
-            const prixUnit = parseFloat(document.getElementById('prix_unit').value) || 0;
+        function calculateMontants(input) {
+            // Trouver le modal parent le plus proche
+            const modal = input.closest('.modal');
+            const quantite = parseFloat(modal.querySelector('.quantite').value) || 0;
+            const prixUnit = parseFloat(modal.querySelector('.prix_unit').value) || 0;
             const tauxTva = 0.18; // Par exemple, 20% de TVA
+            
 
             const montantHt = quantite * prixUnit;
             const montantTva = montantHt * tauxTva
             const montantTtc = montantHt * (1 + tauxTva);
 
             // Mettre à jour les champs Montant HT et TTC
-            document.getElementById('montant_ht').value = montantHt.toFixed(2);
-            document.getElementById('tva').value = montantTva.toFixed(2);
-            document.getElementById('montant_ttc').value = montantTtc.toFixed(2);
+            modal.querySelector('.montant_ht').value = montantHt.toFixed(2);
+            modal.querySelector('.tva').value = montantTva.toFixed(2);
+            modal.querySelector('.montant_ttc').value = montantTtc.toFixed(2);
         }
     </script>
 </body>
