@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kunda</title>
-  <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='slc-assets/img/logo/logo.png')}}" />
+  <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='slc-assets/img/logo/logoSLCjaune.jpg')}}" />
   <link rel="stylesheet" href="{{url_for('static', filename='css/styles.min.css')}}" />
 </head>
 
@@ -180,6 +180,19 @@
           <div class="col-lg-4">
             <div class="row">
               <div class="col-lg-12">
+                <!-- Users -->
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title mb-9 fw-semibold">Utilisateurs connectés aujourd'hui</h5>
+                    <ul>
+                      {% for username, login_time in sessions.items() %}
+                        <li>{{ username }} - Connecté à {{ login_time[11:] }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
                 <!-- Projets en cours -->
                 <div class="card overflow-hidden">
                   <div class="card-body p-4">
@@ -193,15 +206,6 @@
                   <div class="card-body">
                     <h5 class="card-title mb-9 fw-semibold">Projets terminés</h5>
                     <h4 class="fw-semibold mb-3">{{ projets_termines }}</h4>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <!-- Événements -->
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title mb-9 fw-semibold">Nombre total d'événements</h5>
-                    <h4 class="fw-semibold mb-3">{{ total_evenements }}</h4>
                   </div>
                 </div>
               </div>
@@ -222,12 +226,21 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-3">
             <!-- Comptabilité des Matières -->
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title mb-9 fw-semibold">Articles en Comptabilité des Matières</h5>
                 <h4 class="fw-semibold mb-3">{{ total_matieres }}</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <!-- Événements -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title mb-9 fw-semibold">Nombre total d'événements</h5>
+                <h4 class="fw-semibold mb-3">{{ total_evenements }}</h4>
               </div>
             </div>
           </div>

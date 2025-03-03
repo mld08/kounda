@@ -12,10 +12,13 @@ from Models.finance import Finance
 from Models.evenementiel import Evenementiel
 from Models.projet import Projet
 import pandas as pd
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 application = app
+
+user_sessions = {}
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
@@ -234,12 +237,16 @@ def index():
     cursor.execute("SELECT COUNT(*) FROM materiels")
     total_matieres = cursor.fetchone()[0] # type: ignore
     cursor.close()
+    sessions_du_jour = {user: time for user, time in user_sessions.items() if time.startswith(datetime.now(timezone.utc).strftime('%Y-%m-%d'))}
+    # Trier par heure de connexion (en dernier en premier)
+    sessions_triees = dict(sorted(sessions_du_jour.items(), key=lambda x: x[1], reverse=True))
     return render_template('index.html', projets_en_cours=projets_en_cours,
         projets_termines=projets_termines,
         total_evenements=total_evenements,
         total_credit=total_credit,
         total_debit=total_debit,
-        total_matieres=total_matieres)
+        total_matieres=total_matieres,
+        sessions=sessions_triees)
 
 # TRADING
 @app.route('/trading')
@@ -1079,6 +1086,9 @@ def login():
             session['id'] = user[0] # type: ignore
             session['username'] = user[3] # type: ignore
             session['role'] = user[12] # type: ignore
+            session['login_time'] = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+            user_sessions[username] = session['login_time']
+            #sessions_du_jour = {user: time for user, time in user_sessions.items() if time.startswith(datetime.now().strftime('%Y-%m-%d'))}
             return redirect(url_for('index'))
         else:
             flash('Nom d\'utilisateur ou mot de passe incorrect', 'danger')
