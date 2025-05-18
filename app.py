@@ -27,7 +27,7 @@ def init_db():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="Admin123$",
         database="bd_kounda"
     )
     cursor = conn.cursor()
@@ -585,7 +585,7 @@ def export_digital():
 # COMPTABILITE MATIERE
 @app.route('/comptabilite-matiere')
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def comptabilite_matiere():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM materiels")
@@ -595,7 +595,7 @@ def comptabilite_matiere():
 
 @app.route('/comptabilite-matiere/insert', methods=['POST'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def insert_comptabilite_matiere():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -621,7 +621,7 @@ def insert_comptabilite_matiere():
 
 @app.route('/comptabilite-matiere/update', methods=['POST', 'GET'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def update_comptabilite_matiere():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -648,7 +648,7 @@ def update_comptabilite_matiere():
 
 @app.route('/comptabilite-matiere/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def delete_comptabilite_matiere(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -682,7 +682,7 @@ def export_materiels():
 # COMPTABILITE FINANCIERE
 @app.route('/comptabilite-financiere')
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def comptabilite_financiere():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM finances")
@@ -692,7 +692,7 @@ def comptabilite_financiere():
 
 @app.route('/comptabilite-financiere/insert', methods=['POST'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def insert_comptabilite_financiere():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -717,7 +717,7 @@ def insert_comptabilite_financiere():
 
 @app.route('/comptabilite-financiere/update', methods=['POST', 'GET'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def update_comptabilite_financiere():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -743,7 +743,7 @@ def update_comptabilite_financiere():
 
 @app.route('/comptabilite-financiere/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
-@role_required('Digital')
+@role_required('Administrator')
 def delete_comptabilite_financiere(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -777,6 +777,7 @@ def export_finances():
 # PROJETS
 @app.route('/projets')
 @login_required
+@role_required('Trading')
 def projets():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM projets")
@@ -786,6 +787,7 @@ def projets():
 
 @app.route('/projets/insert', methods=['POST'])
 @login_required
+@role_required('Trading')
 def insert_projet():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -805,6 +807,7 @@ def insert_projet():
 
 @app.route('/projets/update', methods=['POST', 'GET'])
 @login_required
+@role_required('Trading')
 def update_projet():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -826,6 +829,7 @@ def update_projet():
 
 @app.route('/projets/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
+@role_required('Trading')
 def delete_projet(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
@@ -859,6 +863,7 @@ def export_projets():
 # EVENEMENTIELS
 @app.route('/evenementiels')
 @login_required
+@role_required('Administrator')
 def evenementiels():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM evenementiels")
@@ -868,6 +873,7 @@ def evenementiels():
 
 @app.route('/evenementiels/insert', methods=['POST'])
 @login_required
+@role_required('Administrator')
 def insert_evenementiel():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -887,6 +893,7 @@ def insert_evenementiel():
 
 @app.route('/evenementiels/update', methods=['POST', 'GET'])
 @login_required
+@role_required('Administrator')
 def update_evenementiel():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -908,6 +915,7 @@ def update_evenementiel():
 
 @app.route('/evenementiels/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
+@role_required('Administrator')
 def delete_evenementiel(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
