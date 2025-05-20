@@ -27,7 +27,8 @@ def init_db():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Admin123$",
+        #password="Admin123$",
+        password="",
         database="bd_kounda"
     )
     cursor = conn.cursor()
@@ -777,7 +778,6 @@ def export_finances():
 # PROJETS
 @app.route('/projets')
 @login_required
-@role_required('Trading')
 def projets():
     conn, cursor = init_db()
     cursor.execute("SELECT * FROM projets")
@@ -787,7 +787,6 @@ def projets():
 
 @app.route('/projets/insert', methods=['POST'])
 @login_required
-@role_required('Trading')
 def insert_projet():
     if request.method == "POST":
         flash('Dossier créé avec succés!')
@@ -807,7 +806,7 @@ def insert_projet():
 
 @app.route('/projets/update', methods=['POST', 'GET'])
 @login_required
-@role_required('Trading')
+#@role_required('Trading')
 def update_projet():
     if request.method == "POST":
         flash('Dossier modifié avec succés!')
@@ -829,7 +828,7 @@ def update_projet():
 
 @app.route('/projets/delete/<string:id_data>', methods = ['POST', 'GET'])
 @login_required
-@role_required('Trading')
+#@role_required('Trading')
 def delete_projet(id_data):
     conn, cursor = init_db()
     flash('Dossier supprimé avec succés')
